@@ -35,7 +35,7 @@
 
 1.  Authorization
        1. Registration (only user)
-            (name,surname,ema   il/phone,password)
+            (name,surname,email/phone,password)
        2. Login
             (email/phone,password)
        3. Verification
@@ -208,5 +208,11 @@ h/w
  use your own Email
  Profile filter
  Article Filter
+
+
+ h/w
+ 1. Validation (C,U)
+ 2. Swagger (ALL)
+ 3. Log  (Controller + info),(Service ixtiyoriy-majburiy)
 
 
