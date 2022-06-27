@@ -1,0 +1,48 @@
+#Asosiy,Muharrir tanlovi,Dolzarb, Maqola,
+#Foto yangilik,Interview,Biznes,Surushturuv,Video Yangilik
+
+POST http://localhost:8080/types/adm/create
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMjEyNzYsImV4cCI6MTY1NjMyNDg3NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.0ToOUZhXt5Xr3zuJFY9yoQY0It8VmPEsWyLj_RDTm6k
+
+{
+  "key": "Video Yangilik",
+  "nameUz": "Video Yangilik_uz",
+  "nameEn": "Video Yangilik_en",
+  "nameRu": "Video Yangilik_ru"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "123"
+}
+
+###
+GET http://localhost:8080/types/adm/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyOTczMzksImV4cCI6MTY1NTMwMDkzOSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.6ggdDlP1fAdjRpNB-Z9r6JrRJ9DIHWD37u_mTjaZAb0
+###
+PUT http://localhost:8080/types/adm/9
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMjEyNzYsImV4cCI6MTY1NjMyNDg3NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.0ToOUZhXt5Xr3zuJFY9yoQY0It8VmPEsWyLj_RDTm6k
+
+{
+  "key": "Video yangilik",
+  "nameUz": "Video Yangilik_uz",
+  "nameEn": "Video Yangilik_en",
+  "nameRu": "Video Yangilik_ru"
+}
+###
+
+DELETE http://localhost:8080/types/adm/
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NTU3MjgsImV4cCI6MTY1NDg1OTMyOCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.mt0xGSRs9FGBZvrf6sKi5fjCjYvYFTuVs7il2wQZyys
+
+###
+GET http://localhost:8080/types/public
+Accept-Language: en
+
+###
+GET http://localhost:8080/types/pagination?page=0&size=3

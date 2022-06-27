@@ -1,0 +1,30 @@
+POST http://localhost:8080/auth/registration
+Content-Type: application/json
+
+{
+  "name": "Bekzod",
+  "surname": "Qoraxonov",
+  "email": "karakhanovbekzod@gmail.com",
+  "password": "7777",
+  "phone": "77777777"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "123"
+}
+
+###
+POST http://localhost:8080/auth/verification
+Content-Type: application/json
+
+{
+  "phone": "998998621534",
+  "code": "91319"
+}
+###
+GET http://localhost:8080/auth/resend/email/t.lochin.98@gmail.com

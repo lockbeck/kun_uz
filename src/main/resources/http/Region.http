@@ -1,0 +1,41 @@
+POST http://localhost:8080/region/adm
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMjEyNzYsImV4cCI6MTY1NjMyNDg3NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.0ToOUZhXt5Xr3zuJFY9yoQY0It8VmPEsWyLj_RDTm6k
+
+{
+  "key": "Navoiy",
+  "nameUz": "Navoiy_uz",
+  "nameEn": "Navoiy_en",
+  "nameRu": "Navoiy_ru"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "123"
+}
+
+###
+GET http://localhost:8080/region/adm/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyOTg3MDcsImV4cCI6MTY1NTMwMjMwNywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.WQIUMwo9vJyrfSshS2x_VX8lg55LQ5QbmOLDSacLrBo
+###
+PUT http://localhost:8080/region/update/1
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NTU3MjgsImV4cCI6MTY1NDg1OTMyOCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.mt0xGSRs9FGBZvrf6sKi5fjCjYvYFTuVs7il2wQZyys
+
+{
+  "key": "samarqndjon",
+  "nameUz": "Samarqand",
+  "nameEn": "Samarkand",
+  "nameRu": "Самарканд"
+}
+###
+
+DELETE http://localhost:8080/region/delete/1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NTU3MjgsImV4cCI6MTY1NDg1OTMyOCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.mt0xGSRs9FGBZvrf6sKi5fjCjYvYFTuVs7il2wQZyys
+###
+GET http://localhost:8080/region/public
+Accept-Language: ru

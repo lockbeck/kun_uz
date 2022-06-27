@@ -1,0 +1,52 @@
+POST http://localhost:8080/profile/adm/create
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyMzIwMjksImV4cCI6MTY1NjIzNTYyOSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.2BEt6GR4SkwlgzCO1lJRm8KcRtea0SjkMJAW2WFY6sk
+
+{
+  "name": "moderator1",
+  "surname": "moderator1",
+  "email": "moderator1@gmail.com",
+  "phone": "998931601132",
+  "password": "11111",
+  "role": "MODERATOR"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "123"
+}
+
+###
+GET http://localhost:8080/profile/adm/list
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyMzI4NjEsImV4cCI6MTY1NjIzNjQ2MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.UoQ4wzwtAVSnRQJgXfBMhaBxW_lN4WQVM9iGnzocS2E
+###
+PUT http://localhost:8080/profile/update/3
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyMzIwMjksImV4cCI6MTY1NjIzNTYyOSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.2BEt6GR4SkwlgzCO1lJRm8KcRtea0SjkMJAW2WFY6sk
+
+{
+  "name": "updatedName",
+  "surname": "upSurname",
+  "email": "updated@gmail.com",
+  "password": "uppass"
+}
+###
+
+DELETE http://localhost:8080/profile/delete/3
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NDA3NDYsImV4cCI6MTY1NDg0NDM0NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.pZ17TyNkrXXYSP3QpXCSQSaeMyUS7nL4iz8FCzyidEU
+###
+PUT http://localhost:8080/profile/setPhoto/df6fa1ee-5ddb-4057-8fec-714f197b9fe9
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyMzU5ODAsImV4cCI6MTY1NjIzOTU4MCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.oAmzrvcXSzh-nNGGwRoTDiO00MxvfbUNSnc222Io_q8
+
+###
+POST http://localhost:8080/profile/adm/filter?page=2&size=2
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMTczNjcsImV4cCI6MTY1NjMyMDk2NywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.9Z4WPzZGv2kbND1tQjGaOslfsk7Rd7D195ltFwyDBTU
+
+{
+  "status": "ACTIVE"
+}

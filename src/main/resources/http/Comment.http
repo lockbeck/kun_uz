@@ -1,0 +1,35 @@
+POST http://localhost:8080/comment/create
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwNjkxMDcsImV4cCI6MTY1NTA3MjcwNywiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.jwJOurKrhNtGkAJKgZ4_u6zrg2-mTw_NPQ8s0bYafck
+
+{
+  "content": "2ci commentga reply biriiii",
+  "articleId": "4028e4b88159789d0181597b3e150002",
+  "replyId": 2
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "user1@gmail.com",
+  "password": "1111"
+}
+
+###
+GET http://localhost:8080/comment/all
+Authorization: Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NTU3MjgsImV4cCI6MTY1NDg1OTMyOCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.mt0xGSRs9FGBZvrf6sKi5fjCjYvYFTuVs7il2wQZyys
+
+###
+PUT http://localhost:8080/comment/2
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwNjk5ODgsImV4cCI6MTY1NTA3MzU4OCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiVVNFUiJ9.tW_IpcKx3Brhqu3G821Z0IBNhH4s5EGjNM6QBoByZOM
+
+{
+  "content": "updated comment 2idli"
+}
+###
+
+DELETE http://localhost:8080/comment/2
+Authorization:   eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwNjk5ODgsImV4cCI6MTY1NTA3MzU4OCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiVVNFUiJ9.tW_IpcKx3Brhqu3G821Z0IBNhH4s5EGjNM6QBoByZOM

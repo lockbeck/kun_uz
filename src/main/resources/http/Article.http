@@ -1,0 +1,105 @@
+###1.create article
+POST http://localhost:8080/article/adm/create
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMzE4NzgsImV4cCI6MTY1NjMzNTQ3OCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo0LCJyb2xlIjoiTU9ERVJBVE9SIn0.HwKv_2fTl1DBqJ5RX38dRsE8Oc4LBQuqDanF8L1o3Y4
+Content-Type: application/json
+
+{
+  "title": "article",
+  "content": "article1_CONTENT",
+  "regionId": 2,
+  "categoryId": 2,
+  "typesList": [1,2],
+  "tagList": ["#dance","#show","#again"],
+  "imageId": "10242965-8bca-4e7f-a0c6-5491775a4fa2"
+}
+
+###2.update article
+POST http://localhost:8080/article/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyOTczMzksImV4cCI6MTY1NTMwMDkzOSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.6ggdDlP1fAdjRpNB-Z9r6JrRJ9DIHWD37u_mTjaZAb0eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyODI5ODQsImV4cCI6MTY1NTI4NjU4NCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo2LCJyb2xlIjoiTU9ERVJBVE9SIn0.NXIlEiFERy3-yDDjfQikig9k-IaY0MBjqkubdt6s0kA
+
+{
+"title": "korona",
+"content": "virus",
+"description": "dfvsdfs",
+"regionId": 5,
+"categoryId": 3,
+"typesList": [6,3,4],
+"tagList": ["#koronavirus","#karantin","#epidemiya"]
+}
+
+###3.Delete article
+DELETE http://localhost:8080/article/adm/delete/8a8a849e8166989a0181669b261a0009
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTU3MTI4NTEsImV4cCI6MTY1NTcxNjQ1MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo3LCJyb2xlIjoiUFVCTElTSEVSIn0.-Y9gYm4sx0ivdT-2bo64Y6DMQeifIoaV7klC3NJc4pc
+
+###4.change status
+PUT http://localhost:8080/article/adm/changeStatus/8a8a849e8166989a0181669af3820002
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTU3MTI4NTEsImV4cCI6MTY1NTcxNjQ1MSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo3LCJyb2xlIjoiUFVCTElTSEVSIn0.-Y9gYm4sx0ivdT-2bo64Y6DMQeifIoaV7klC3NJc4pc
+
+###5.get last 5 by type
+GET http://localhost:8080/article/get5/2222
+
+###6.get last 3 by type
+GET http://localhost:8080/article/get5/2222
+
+### 7.Get last 8 not include given id
+POST http://localhost:8080/article/last8
+Content-Type: application/json
+
+{
+  "idList": ["8a8a849e8166989a0181669b261a0009","8a8a849e8166989a0181669aa39f0001","8a8a849e8166989a0181669b08760005"
+  , "8a8a849e8166989a0181669af9fe0004", "8a8a849e8166989a0181669b19f20006", "8a8a849e8166989a0181669b1ea00007"
+  ,"8a8a849e8166989a0181669b22d30008","8a8a849e8166989a0181669b2929000a", "8a8a849e8166989a0181669b2c14000b"]
+}
+
+###8.Get Article By Id ArticleFullInfo
+GET http://localhost:8080/article/8a8a849e8166989a0181669b34f2000e
+Accept-Language: uz
+
+###9.get last4 by type not in
+POST http://localhost:8080/article/last4/6666
+Content-Type: application/json
+
+{
+  "idList": ["8a8a849e8166989a0181669aa39f0001","8a8a849e8166989a0181669b1ea00007"]
+}
+###10 Get most read 4  shortInfo
+GET http://localhost:8080/article/mostread4/8a8a849e8166989a0181669b19f20006
+
+###
+GET http://localhost:8080/article/listArticle
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUxMDQ2MjQsImV4cCI6MTY1NTEwODIyNCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo3LCJyb2xlIjoiUFVCTElTSEVSIn0.TVlGsh8iV-1nFQipRw_0aTPJ16fiSkMAGkycqeRgGp0
+
+###
+
+DELETE http://localhost:8080/profile/delete/3
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NDA3NDYsImV4cCI6MTY1NDg0NDM0NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.pZ17TyNkrXXYSP3QpXCSQSaeMyUS7nL4iz8FCzyidEU
+
+###
+GET http://localhost:8080/article/pagination?page=0&size=4
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "moderator1@gmail.com",
+  "password": "11111"
+}
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "publisher1@gmail.com",
+  "password": "1111"
+}
+
+###
+
+POST http://localhost:8080/article/filter?page=0&size=2
+Content-Type: application/json
+
+{
+  "regionId": 2
+}

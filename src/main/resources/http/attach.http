@@ -1,0 +1,11 @@
+POST http://localhost:8080/attach/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="Lambo.jpg"
+
+< C:\Users\mjava\Desktop\Lambo.jpg
+
+
+###
+DELETE http://localhost:8080/attach/delete/31e49277-005d-48df-a027-6ed1327529ce.jpg

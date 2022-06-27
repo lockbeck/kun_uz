@@ -1,0 +1,50 @@
+#O‘ZBEKISTON
+#JAHON
+#IQTISODIYOT
+#JAMIYAT
+#FAN-TEXNIKA
+#SPORT
+#BUSINESS CLASS
+#AUDIO
+POST http://localhost:8080/category/create
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYzMjEyNzYsImV4cCI6MTY1NjMyNDg3NiwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.0ToOUZhXt5Xr3zuJFY9yoQY0It8VmPEsWyLj_RDTm6k
+
+{
+  "key": "AUDIO",
+  "nameUz": "AUDIO_uz",
+  "nameEn": "AUDIO_en",
+  "nameRu": "AUDIO_ru"
+}
+
+###
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "123"
+}
+
+###
+GET http://localhost:8080/category/1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NTU3MjgsImV4cCI6MTY1NDg1OTMyOCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.mt0xGSRs9FGBZvrf6sKi5fjCjYvYFTuVs7il2wQZyys
+###
+PUT http://localhost:8080/category/update/1
+Content-Type: application/json
+Authorization:eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUwNjE5ODQsImV4cCI6MTY1NTA2NTU4NCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.D3OqISEidIhOIP6GFxgQBVDVCrZ0GD3PaTeUZzn6lD4
+
+{
+  "key": "IMPORTANT",
+  "nameUz": "Muhim maqolalar",
+  "nameEn": "Important articles",
+  "nameRu": "Важные статьи"
+}
+###
+
+DELETE http://localhost:8080/category/delete/1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTQ4NTU3MjgsImV4cCI6MTY1NDg1OTMyOCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.mt0xGSRs9FGBZvrf6sKi5fjCjYvYFTuVs7il2wQZyys
+
+###
+GET http://localhost:8080/category/public
+Accept-Language: uz

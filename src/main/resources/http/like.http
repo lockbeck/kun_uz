@@ -1,0 +1,7 @@
+POST http://localhost:8080/article_like/remove
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUzMDMxODUsImV4cCI6MTY1NTMwNjc4NSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoyLCJyb2xlIjoiVVNFUiJ9.3RwhREmCjIj48un-ZSqUC7AK1Ce_oMj7-smb_wFGHUI
+
+{
+  "articleId": "8a8a849e8166989a0181669af9fe0004"
+}
