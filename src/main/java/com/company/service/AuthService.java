@@ -13,12 +13,14 @@ import com.company.repository.EmailHistoryRepository;
 import com.company.repository.ProfileRepository;
 import com.company.repository.SmsRepository;
 import com.company.util.JwtUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class AuthService {
     @Autowired
@@ -33,24 +35,20 @@ public class AuthService {
     private EmailHistoryRepository emailHistoryRepository;
 
 
-
     public ProfileDTO login(AuthDTO dto) {
-        if (dto.getEmail().isEmpty()||!dto.getEmail().endsWith("@gmail.com")) {
-            throw new BadRequestException("Email is required");
-        }
-        if (dto.getPassword().isEmpty()||dto.getPassword().length()<3) {
-            throw new BadRequestException("Password is required");
-        }
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
         if (optional.isEmpty()) {
-            throw new BadRequestException("User not found");
+            log.warn("User not found by email (" + dto.getEmail() + ") when logged in. Date:");
+            throw new BadRequestException("User not found by email (" + dto.getEmail() + ")");
         }
         ProfileEntity profileEntity = optional.get();
         if (!profileEntity.getPassword().equals(dto.getPassword())) {
-            throw new BadRequestException("User not found");
+            log.warn("User entered incorrect password (" + dto.getPassword() + ") when logged in.");
+            throw new BadRequestException("User password incorrect (" + dto.getPassword() + ") ");
         }
 
         if (!profileEntity.getStatus().equals(ProfileStatus.ACTIVE)) {
+            log.warn(profileEntity.getName() + " is not active user.");
             throw new BadRequestException("Not active user");
         }
 
@@ -63,9 +61,9 @@ public class AuthService {
     }
 
     public String registration(RegistrationDTO dto) {
-        isValid(dto);
         Optional<ProfileEntity> optional = profileRepository.findByEmail(dto.getEmail());
         if (optional.isPresent()) {
+            log.warn("User already exists by email (" + dto.getEmail() + ") or phone(" + dto.getPhone() + ") ");
             throw new BadRequestException("User already exists");
         }
 
@@ -82,24 +80,26 @@ public class AuthService {
 //        smsService.sendRegistrationSms(dto.getPhone());
         emailService.sendRegistrationEmail(entity.getEmail(), entity.getId());
 
-        return "Activation code was sent to "+dto.getEmail();
+        return "Activation code was sent to " + dto.getEmail();
     }
+
     public String verification(VerificationDTO dto) {
         Optional<SmsEntity> optional = smsRepository.findTopByPhoneOrderByCreatedDateDesc(dto.getPhone());
         if (optional.isEmpty()) {
+            log.warn("Phone(" + dto.getPhone() + ") not found in verification");
             return "Phone Not Found";
         }
-
         SmsEntity sms = optional.get();
         LocalDateTime validDate = sms.getCreatedDate().plusMinutes(1);
 
         if (!sms.getCode().equals(dto.getCode())) {
+            log.warn("Phone (" + dto.getPhone() + ") did not match with code (" + dto.getCode() + ") in verification");
             return "Code Invalid";
         }
         if (validDate.isBefore(LocalDateTime.now())) {
+            log.warn("Time is out with phone(" + dto.getPhone() + ")");
             return "Time is out";
         }
-
         profileRepository.updateStatusByPhone(dto.getPhone(), ProfileStatus.ACTIVE);
         return "Verification Done";
     }
@@ -107,15 +107,18 @@ public class AuthService {
     public ResponseInfoDTO resendSms(String phone) {
         Long count = smsService.smsCount(phone);
         if (count >= 4) {
+            log.warn("Too many attempts with phone("+phone+")");
             return new ResponseInfoDTO(-1, "Too many attempts. Try later");
         }
 
         smsService.sendRegistrationSms(phone);
         return new ResponseInfoDTO(1);
     }
+
     public String emailVerification(Integer id) {
         Optional<ProfileEntity> profile = profileRepository.findById(id);
         if (profile.isEmpty()) {
+            log.warn("User not found by token");
             return "<h1>User Not Found</h1>";
         }
 
@@ -136,6 +139,7 @@ public class AuthService {
         profileRepository.save(profileEntity);
         return "<h1 style='align-text:center'>Success. Tabriklaymiz.</h1>";
     }
+
     public ResponseInfoDTO resendEmail(String email) {
 
 
@@ -145,30 +149,15 @@ public class AuthService {
         }
 
         ProfileEntity entity = byEmail.get();
-        if(entity.getStatus().equals(ProfileStatus.ACTIVE)){
+        if (entity.getStatus().equals(ProfileStatus.ACTIVE)) {
             throw new BadRequestException("User has already verified by email");
         }
         Long count = emailService.getCountByEmail(email);
-        if(count>=3){
+        if (count >= 3) {
             throw new BadRequestException("Too many attempts. Try later");
         }
-        emailService.sendRegistrationEmail( email,entity.getId());
-        return new ResponseInfoDTO(1,"Link was sent to " +email);
+        emailService.sendRegistrationEmail(email, entity.getId());
+        return new ResponseInfoDTO(1, "Link was sent to " + email);
     }
 
-
-    public void isValid(RegistrationDTO dto){
-        if (dto.getName().isEmpty()) {
-            throw new BadRequestException("Name is required");
-        }
-        if (dto.getSurname().isEmpty()) {
-            throw new BadRequestException("Surname is required");
-        }
-        if (dto.getEmail().isEmpty()) {
-            throw new BadRequestException("Email is required");
-        }
-        if (dto.getPassword().isEmpty()) {
-            throw new BadRequestException("Password is required");
-        }
-    }
 }

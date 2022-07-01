@@ -25,7 +25,7 @@ public class ArticleTagService {
     }
 
 
-
-
-
+    public void delete(String id) {
+        articleTagRepository.deleteByArticleId(id);
+    }
 }

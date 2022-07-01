@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ###2.update article
-POST http://localhost:8080/article/create
+PUT http://localhost:8080/article/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyOTczMzksImV4cCI6MTY1NTMwMDkzOSwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjoxLCJyb2xlIjoiQURNSU4ifQ.6ggdDlP1fAdjRpNB-Z9r6JrRJ9DIHWD37u_mTjaZAb0eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTUyODI5ODQsImV4cCI6MTY1NTI4NjU4NCwiaXNzIjoiTWF6Z2kgcHJvZHVjdGlvbiIsImlkIjo2LCJyb2xlIjoiTU9ERVJBVE9SIn0.NXIlEiFERy3-yDDjfQikig9k-IaY0MBjqkubdt6s0kA
 

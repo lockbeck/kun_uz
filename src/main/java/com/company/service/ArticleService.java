@@ -63,6 +63,8 @@ public class ArticleService {
         moderator.setId(profileId);
         entity.setModerator(moderator);
 
+        entity.setAttach(new AttachEntity(dto.getImageId()));
+
         entity.setStatus(ArticleStatus.NOT_PUBLISHED);
 
         articleRepository.save(entity);
@@ -75,10 +77,39 @@ public class ArticleService {
 
     }
 
-    public void update(String id , ArticleDTO dto){
+    public void update(String id , ArticleCreateDTO dto){
         ArticleEntity entity = get(id);
-        toEntity(dto, entity);
+
+        entity.setTitle(dto.getTitle());
+        entity.setDescription(dto.getDescription());
+        entity.setContent(dto.getContent());
+
+        RegionEntity region = regionService.get(dto.getRegionId());
+        CategoryEntity category = categoryService.get(dto.getCategoryId());
+        entity.setRegion(region);
+        entity.setCategory(category);
+
+
+        entity.setAttach(new AttachEntity(dto.getImageId()));
+        entity.setStatus(ArticleStatus.NOT_PUBLISHED);
+        if (entity.getAttach() == null && dto.getImageId() != null) {
+            entity.setAttach(new AttachEntity(dto.getImageId()));
+        } else if (entity.getAttach() != null && dto.getImageId()== null) {
+            articleRepository.updatePhotoById(id,dto.getImageId());
+            attachService.delete(entity.getAttach().getId());
+            entity.setAttach(null);
+        } else if (entity.getAttach() != null && dto.getImageId() != null &&
+                !entity.getAttach().getId().equals(dto.getImageId())) {
+            articleRepository.updatePhotoById(id,dto.getImageId());
+            attachService.delete(entity.getAttach().getId());
+            entity.setAttach(new AttachEntity(dto.getImageId()));
+        }
+
         articleRepository.save(entity);
+        articleTagService.delete(id);
+        articleTagService.create(entity,dto.getTagList());
+        articleTypeService.delete(id);
+        articleTypeService.create(entity,dto.getTypesList());
 
     }
 
@@ -365,24 +396,6 @@ public class ArticleService {
         entity.setViewCount(dto.getViewCount());
         entity.setSharedCount(dto.getSharedCount());
         return entity;
-    }
-
-    public void toEntity(ArticleDTO dto,ArticleEntity entity){
-        entity.setTitle(dto.getTitle());
-        entity.setDescription(dto.getDescription());
-        entity.setContent(dto.getContent());
-
-        entity.setCreatedDate(dto.getCreatedDate());
-        entity.setPublishedDate(dto.getPublishedDate());
-
-        entity.setViewCount(dto.getViewCount());
-        entity.setSharedCount(dto.getSharedCount());
-
-        RegionEntity region = regionService.get(dto.getRegion().getId());
-        CategoryEntity category = categoryService.get(dto.getCategory().getId());
-        entity.setRegion(region);
-        entity.setCategory(category);
-        entity.setStatus(ArticleStatus.NOT_PUBLISHED);
     }
 
     public List<ArticleDTO> getLast5ByTypeAndRegionNotId(String id, String regionKey, String typeKey) {

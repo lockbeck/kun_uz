@@ -29,7 +29,7 @@ public class ArticleController {
 
     // 2. Moderator updates article
     @PutMapping("/adm/{id}")
-    public ResponseEntity<String>update(@RequestBody ArticleDTO dto,
+    public ResponseEntity<String>update(@RequestBody ArticleCreateDTO dto,
                                         @PathVariable("id") String id,
                                         HttpServletRequest request){
         Integer pId = HttpHeaderUtil.getId(request ,ProfileRole.MODERATOR);

@@ -45,6 +45,9 @@ public class ProfileService {
         entity.setPhone(dto.getPhone());
         entity.setRole(dto.getRole());
         entity.setStatus(ProfileStatus.ACTIVE);
+        if(dto.getPhotoId()!=null){
+            entity.setPhoto(new AttachEntity(dto.getPhotoId()));
+        }
 
         profileRepository.save(entity);
         dto.setPassword(null);
@@ -60,10 +63,12 @@ public class ProfileService {
         if (entity.getPhoto() == null && dto.getPhotoId() != null) {
             entity.setPhoto(new AttachEntity(dto.getPhotoId()));
         } else if (entity.getPhoto() != null && dto.getPhotoId() == null) {
+            profileRepository.updatePhotoById(profileId,dto.getPhotoId());
             attachService.delete(entity.getPhoto().getId());
             entity.setPhoto(null);
         } else if (entity.getPhoto() != null && dto.getPhotoId() != null &&
                 !entity.getPhoto().getId().equals(dto.getPhotoId())) {
+            profileRepository.updatePhotoById(profileId,dto.getPhotoId());
             attachService.delete(entity.getPhoto().getId());
             entity.setPhoto(new AttachEntity(dto.getPhotoId()));
         }

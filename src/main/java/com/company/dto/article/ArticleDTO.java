@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,8 +21,12 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArticleDTO {
     private String id;
+    @NotNull(message = "Title required MAZGI")
+    @Size(min = 10, max = 255,message = "title must be between 10 and 255 characters")
     private String title;
+    @NotBlank(message = "Description required MAZGI")
     private String description;
+    @NotBlank(message = "Content required MAZGI")
     private String content;
     private Integer viewCount;
     private Integer sharedCount;

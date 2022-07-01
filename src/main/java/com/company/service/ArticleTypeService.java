@@ -24,4 +24,8 @@ public class ArticleTypeService {
              articleTypeRepository.save(articleType);
          }
      }
+
+    public void delete(String id) {
+         articleTypeRepository.deleteByArticleId(id);
+    }
 }

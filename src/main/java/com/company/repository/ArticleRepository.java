@@ -118,6 +118,11 @@ Page<ArticleEntity> findLast4NotInListByType(@Param("idList") List<String> idLis
             "and art.visible = true and art.status = 'PUBLISHED' " +
             " order by art.publishedDate")
     Page<ArticleEntity> getLast5ByTypeAndRegionNotId(@Param("typeKey") String typeKey, @Param("regionKey")String regionKey, Pageable pageable );
+
+    @Modifying
+    @Transactional
+    @Query("update ArticleEntity as a set a.attach.id =?2 where a.id =?1")
+    void updatePhotoById(String id, String imageId);
 //    @Modifying
 //    @Transactional
 //    @Query("update ArticleEntity a set a.status =:status where a.id=:articleId")

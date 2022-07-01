@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleTagRepository extends CrudRepository<ArticleTagEntity,Integer> {
-
+    void deleteByArticleId(String id);
 }

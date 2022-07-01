@@ -4,9 +4,9 @@ Content-Type: application/json
 {
   "name": "Bekzod",
   "surname": "Qoraxonov",
-  "email": "karakhanovbekzod@gmail.com",
+  "email": "t.lochin.98@gmail.com",
   "password": "7777",
-  "phone": "77777777"
+  "phone": "998998621524"
 }
 
 ###
@@ -14,8 +14,8 @@ POST http://localhost:8080/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@gmail.com",
-  "password": "123"
+  "email": "t.lochin.98@gmail.com",
+  "password": "7777"
 }
 
 ###

@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface ArticleTypeRepository extends CrudRepository<ArticleTypeEntity,Integer> {
 
+    void deleteByArticleId(String id);
 }
