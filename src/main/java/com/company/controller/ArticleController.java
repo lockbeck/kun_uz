@@ -5,6 +5,7 @@ import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.ArticleService;
 import com.company.util.HttpHeaderUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
@@ -22,6 +23,7 @@ public class ArticleController {
     // 1. Moderator creates article
     @PostMapping("/adm/create")
     public ResponseEntity<ArticleDTO> create(@RequestBody @Valid ArticleCreateDTO dto, HttpServletRequest request) {
+        log.info("Request for create article {}",dto);
         Integer pId = HttpHeaderUtil.getId(request ,ProfileRole.MODERATOR);
         ArticleDTO articleDTO = articleService.create(dto, pId);
         return ResponseEntity.ok(articleDTO);
@@ -33,7 +35,7 @@ public class ArticleController {
                                         @PathVariable("id") String id,
                                         HttpServletRequest request){
         Integer pId = HttpHeaderUtil.getId(request ,ProfileRole.MODERATOR);
-
+        log.info("Request for update article {}",dto);
         articleService.update(id,dto);
         return ResponseEntity.ok("Successful");
     }
@@ -42,6 +44,7 @@ public class ArticleController {
     @DeleteMapping("/adm/delete/{id}")
     public ResponseEntity<String>delete(@PathVariable("id") String id,
                                         HttpServletRequest request){
+        log.info("Request for delete article by id {}",id);
         HttpHeaderUtil.getId(request ,ProfileRole.MODERATOR);
         articleService.delete(id);
         return ResponseEntity.ok("Successful");
@@ -53,6 +56,7 @@ public class ArticleController {
     @PutMapping("/adm/changeStatus/{id}")
     public ResponseEntity<String>changeStatus(@PathVariable("id") String id,
                                               HttpServletRequest request){
+        log.info("Request for change status of article by id {}",id);
         Integer decode = HttpHeaderUtil.getId(request ,ProfileRole.PUBLISHER);
         articleService.changeStatus(decode, id);
         return ResponseEntity.ok("Successful");
@@ -61,21 +65,22 @@ public class ArticleController {
     // 5. Get last 5 by type order by created_date for PUBLIC
     @GetMapping("/get5/{typeKey}")
     public ResponseEntity<?> getLast5ByType(@PathVariable("typeKey") String typeKey ){
-
+        log.info("Request for get last 5 by type key {}",typeKey);
         List<ArticleDTO> all = articleService.getLast5ArticleByType(typeKey);
         return ResponseEntity.ok().body(all);
     }
     // 6. Get last 3 by type order by created_date for PUBLIC
     @GetMapping("/get3/{typeKey}")
     public ResponseEntity<?> getLast3ByType(@PathVariable("typeKey") String typeKey ){
-
+        log.info("Request for get last 3 by type key {}",typeKey);
         List<ArticleDTO> all = articleService.getLast3ArticleByType(typeKey);
         return ResponseEntity.ok().body(all);
     }
 
     // 7. Get last 8 not include given id
     @PostMapping("/last8")
-    public ResponseEntity<List<ArticleDTO>> getLast8NoyIn(@RequestBody ArticleRequestDTO dto) {
+    public ResponseEntity<List<ArticleDTO>> getLast8NotIn(@RequestBody ArticleRequestDTO dto) {
+        log.info("Request for get last 8 not in given list id {}",dto);
         List<ArticleDTO> response = articleService.getLast8NotInList(dto.getIdList());
         return ResponseEntity.ok().body(response);
     }
@@ -83,6 +88,7 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<ArticleFullInfoDTO>show(@PathVariable("id") String id,
                                           @RequestHeader(value = "Accept-language", defaultValue = "uz") LangEnum language){
+        log.info("Request for article full info by id {}",id);
         ArticleFullInfoDTO dto = articleService.getById(id,language);
         return ResponseEntity.ok(dto);
 
@@ -91,6 +97,7 @@ public class ArticleController {
     @PostMapping("/last4/{typeKey}")
     public ResponseEntity<List<ArticleDTO>> getLast4ByTypeNotIn(@RequestBody ArticleRequestDTO dto,
                                                                 @PathVariable String typeKey){
+        log.info("Request for get last 4 by type key {} not in given list id  {}",typeKey, dto);
         List<ArticleDTO> response = articleService.getLast4ByTypeNotInList(typeKey, dto.getIdList());
         return ResponseEntity.ok(response);
 
@@ -99,6 +106,7 @@ public class ArticleController {
     // 10. Get 4 most read articles   ArticleShortInfo
     @GetMapping("/mostread4/{id}")
     public ResponseEntity<List<ArticleDTO>>mostRead4(@PathVariable("id") String id){
+        log.info("Request for 4 most read not given id {}",id);
         List<ArticleDTO> dtoList = articleService.mostRead4(id);
         return ResponseEntity.ok(dtoList);
 
@@ -108,6 +116,7 @@ public class ArticleController {
     @PostMapping("/last4/{tagName}")
     public ResponseEntity<List<ArticleDTO>> getLast4ByTagNameNotId(@RequestBody ArticleDTO dto,
                                                                 @PathVariable("tagName") String typeKey){
+        log.info("Request for get last 4 by tag name {} not id {}",typeKey, dto.getId());
         List<ArticleDTO> response = articleService.getLast4ByTagNameNotId(typeKey, dto.getId());
         return ResponseEntity.ok(response);
 
@@ -117,6 +126,7 @@ public class ArticleController {
     @PostMapping("/last5/by_region_and_type/{id}")
     public ResponseEntity<List<ArticleDTO>> getLast5ByTypeAndRegionKeyNotId(@RequestBody ArticleRequestDTO dto,
                                                                    @PathVariable("id") String id){
+        log.info("Request for get last 5 by type key {} and region key {} not id {}",dto.getTypeKey(),dto.getRegionKey(),id);
         List<ArticleDTO> response = articleService.getLast5ByTypeAndRegionNotId ( id, dto.getRegionKey(),dto.getTypeKey());
         return ResponseEntity.ok(response);
 
@@ -130,7 +140,8 @@ public class ArticleController {
 
     @GetMapping("/adm/listArticle")
     public ResponseEntity<?> getAll( HttpServletRequest request){
-        HttpHeaderUtil.getId(request ,ProfileRole.MODERATOR);
+        log.info("Request for get all for ADMIN");
+        HttpHeaderUtil.getId(request ,ProfileRole.ADMIN);
         List<ArticleDTO> all = articleService.getAll();
         return ResponseEntity.ok().body(all);
     }

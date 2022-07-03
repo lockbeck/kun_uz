@@ -5,6 +5,7 @@ import com.company.enums.ProfileRole;
 import com.company.enums.ProfileStatus;
 import com.company.exp.BadRequestException;
 import com.company.repository.ProfileRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/init")
+@Slf4j
 public class InitController {
 
     @Autowired
@@ -37,6 +39,8 @@ public class InitController {
         entity.setRole(ProfileRole.ADMIN);
         entity.setStatus(ProfileStatus.ACTIVE);
         profileRepository.save(entity);
+
+        log.info("Request for in it ADMIN {}", entity);
         return ResponseEntity.ok("Admin added");
     }
 }

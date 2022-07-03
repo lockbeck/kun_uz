@@ -7,6 +7,7 @@ import com.company.dto.profile.ProfileFilterDTO;
 import com.company.enums.ProfileRole;
 import com.company.service.ProfileService;
 import com.company.util.HttpHeaderUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profile")
+@Slf4j
 public class ProfileController {
     @Autowired
     private ProfileService profileService;
@@ -25,6 +27,7 @@ public class ProfileController {
     @PostMapping("/adm/create")
     public ResponseEntity<ProfileDTO> create(@RequestBody ProfileDTO dto,
                                              HttpServletRequest request) {
+        log.info("Request to create profile {}", dto);
         HttpHeaderUtil.getId(request , ProfileRole.ADMIN);
         ProfileDTO profileDTO = profileService.create(dto);
         return ResponseEntity.ok(profileDTO);
@@ -33,12 +36,14 @@ public class ProfileController {
     public ResponseEntity<String>update(@RequestBody ProfileDTO dto,
                                         @PathVariable("id") Integer id,
                                         HttpServletRequest request){
+        log.info("Request to update profile {}", dto);
         HttpHeaderUtil.getId(request , ProfileRole.ADMIN);
         profileService.update(id,dto);
         return ResponseEntity.ok("Successful");
     }
     @GetMapping("/adm/list")
     public ResponseEntity<?> getAll(HttpServletRequest request){
+        log.info("Request to get profile list");
         HttpHeaderUtil.getId(request , ProfileRole.ADMIN);
         List<ProfileDTO> all = profileService.getAll();
         return ResponseEntity.ok().body(all);
@@ -46,6 +51,7 @@ public class ProfileController {
     @DeleteMapping("/adm/{id}")
     public ResponseEntity<String>delete(@PathVariable("id") Integer id,
                                         HttpServletRequest request){
+        log.info("Request to delete profile by id {}", id);
         HttpHeaderUtil.getId(request , ProfileRole.ADMIN);
         profileService.delete(id);
         return ResponseEntity.ok("Successful");
