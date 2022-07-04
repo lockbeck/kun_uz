@@ -177,6 +177,35 @@ public class ArticleService {
         return dtoList;
     }
 
+    private ArticleFullInfoDTO fullInfo(ArticleEntity entity, LangEnum langEnum) {
+        ArticleFullInfoDTO articleDTO = new ArticleFullInfoDTO();
+
+        articleDTO.setId(entity.getId());
+        articleDTO.setTitle(entity.getTitle());
+        articleDTO.setDescription(entity.getDescription());
+        articleDTO.setContent(entity.getContent());
+
+        RegionEntity region = regionService.get(entity.getRegion().getId());
+        RegionDTO regionDTO = regionService.getArticleKeyAndName(region, langEnum);
+        articleDTO.setRegion(regionDTO);
+
+        CategoryEntity category = categoryService.get(entity.getCategory().getId());
+        CategoryDTO categoryDTO = categoryService.getArticleKeyAndName(category, langEnum);
+        articleDTO.setCategory(categoryDTO);
+
+        articleDTO.setPublishedDate(entity.getPublishedDate());
+
+        articleDTO.setViewCount(entity.getViewCount());
+        articleDTO.setSharedCount(entity.getSharedCount());
+
+        //Integer numberLike = articleLikeService.getNumberOfLikeByArticleId(entity.getId());
+        //articleDTO.setLikeCount(numberLike);
+
+        List<String> stringList = tagService.getTagNameByArticleId(entity.getId());
+        articleDTO.setTagList(stringList);
+        return articleDTO;
+    }
+
     public ArticleFullInfoDTO getById(String id ,LangEnum language){
         ArticleEntity entity = get(id);
         if (entity.getVisible().equals(Boolean.FALSE)) {
@@ -226,41 +255,49 @@ public class ArticleService {
         return dtoList;
     }
 
-    private ArticleFullInfoDTO fullInfo(ArticleEntity entity, LangEnum langEnum) {
-        ArticleFullInfoDTO articleDTO = new ArticleFullInfoDTO();
+    public List<ArticleDTO> getLast5ByTypeAndRegionNotId(String id, String regionKey, String typeKey) {
+        Pageable pageable = PageRequest.of(0, 5);
 
-        articleDTO.setId(entity.getId());
-        articleDTO.setTitle(entity.getTitle());
-        articleDTO.setDescription(entity.getDescription());
-        articleDTO.setContent(entity.getContent());
+        Page<ArticleEntity> articlePage = articleRepository.getLast5ByTypeAndRegionNotId(typeKey, regionKey, pageable);
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        articlePage.getContent().forEach(article -> {
+            dtoList.add(shortInfo(article));
+        });
 
-        RegionEntity region = regionService.get(entity.getRegion().getId());
-        RegionDTO regionDTO = regionService.getArticleKeyAndName(region, langEnum);
-        articleDTO.setRegion(regionDTO);
-
-        CategoryEntity category = categoryService.get(entity.getCategory().getId());
-        CategoryDTO categoryDTO = categoryService.getArticleKeyAndName(category, langEnum);
-        articleDTO.setCategory(categoryDTO);
-
-        articleDTO.setPublishedDate(entity.getPublishedDate());
-
-        articleDTO.setViewCount(entity.getViewCount());
-        articleDTO.setSharedCount(entity.getSharedCount());
-
-        //Integer numberLike = articleLikeService.getNumberOfLikeByArticleId(entity.getId());
-        //articleDTO.setLikeCount(numberLike);
-
-        List<String> stringList = tagService.getTagNameByArticleId(entity.getId());
-        articleDTO.setTagList(stringList);
-        return articleDTO;
+        return dtoList;
     }
-    public ArticleEntity get(String id){
-        Optional<ArticleEntity> byId = articleRepository.findById(id);
-        if(byId.isEmpty()){
-            throw new ItemNotFoundException("Article not found");
-        }
-        return byId.get();
 
+    public List<ArticleDTO> getArticleListPaginationByRegionKey(String regionKey, int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "createdDate");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<ArticleEntity> list = articleRepository.getListPaginationByRegionKey(regionKey, pageable);
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        list.getContent().forEach(article -> {
+            dtoList.add(shortInfo(article));
+        });
+
+        return dtoList;
+    }
+    public List<ArticleDTO> getLast5ArticleByCategory3(String categoryKey) {
+        List<ArticleShortInfoByCategory> articleList = articleRepository.findTop5ByArticleByCategory3(categoryKey);
+
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        articleList.forEach(article -> {
+            dtoList.add(shortInfo(article));
+        });
+        return dtoList;
+    }
+
+    public List<ArticleDTO> getArticleListPaginationByCategoryKey(String categoryKey, int page, int size) {
+        Sort sort = Sort.by(Sort.Direction.ASC, "createdDate");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<ArticleEntity> list = articleRepository.getListPaginationByRegionKey(categoryKey, pageable);
+        List<ArticleDTO> dtoList = new LinkedList<>();
+        list.getContent().forEach(article -> {
+            dtoList.add(shortInfo(article));
+        });
+
+        return dtoList;
     }
 
     public List<ArticleDTO> getAll() {
@@ -307,6 +344,13 @@ public class ArticleService {
         return new PageImpl(dtoList,pageable, all.getTotalElements());
     }
 
+
+
+
+
+
+
+
     public List<ArticleDTO> getLast5ArticleByCategoryKey(String key){
         CategoryEntity categoryEntity = categoryService.get(key);
         List<ArticleDTO> dtoList = new LinkedList<>();
@@ -320,22 +364,12 @@ public class ArticleService {
 
     public List<ArticleDTO> getLast5ArticleByCategoryKey2(String categoryKey) {
         Pageable pageable = PageRequest.of(0, 5);
-        Page<ArticleEntity> articlePage = articleRepository.findLast5ByCategory(
+        Page<ArticleEntity> articlePage = articleRepository.findTop5ByArticleByCategory2(
                 categoryKey, ArticleStatus.PUBLISHED, pageable);
         int n =  articlePage.getTotalPages();
 
         List<ArticleDTO> dtoList = new LinkedList<>();
         articlePage.getContent().forEach(article -> {
-            dtoList.add(shortInfo(article));
-        });
-        return dtoList;
-    }
-
-    public List<ArticleDTO> getLast5ArticleByCategory3(String categoryKey) {
-        List<ArticleShortInfoByCategory> articleList = articleRepository.findTop5ByArticleByCategory3(categoryKey);
-
-        List<ArticleDTO> dtoList = new LinkedList<>();
-        articleList.forEach(article -> {
             dtoList.add(shortInfo(article));
         });
         return dtoList;
@@ -358,7 +392,6 @@ public class ArticleService {
         articleDTO.setPublishedDate(entity.getPublishedDate());
         return articleDTO;
     }
-
     public ArticleDTO toDto(ArticleEntity entity){
         ArticleDTO articleDTO = new ArticleDTO();
         articleDTO.setTitle(entity.getTitle());
@@ -376,6 +409,7 @@ public class ArticleService {
         articleDTO.setAttach(attachDTO);
         return articleDTO;
     }
+
     public void toDto(ArticleDTO dto , ArticleEntity entity){
         dto.setTitle(entity.getTitle());
         dto.setDescription(entity.getDescription());
@@ -396,18 +430,6 @@ public class ArticleService {
         entity.setViewCount(dto.getViewCount());
         entity.setSharedCount(dto.getSharedCount());
         return entity;
-    }
-
-    public List<ArticleDTO> getLast5ByTypeAndRegionNotId(String id, String regionKey, String typeKey) {
-        Pageable pageable = PageRequest.of(0, 5);
-
-        Page<ArticleEntity> articlePage = articleRepository.getLast5ByTypeAndRegionNotId(typeKey, regionKey, pageable);
-        List<ArticleDTO> dtoList = new LinkedList<>();
-        articlePage.getContent().forEach(article -> {
-            dtoList.add(shortInfo(article));
-        });
-
-        return dtoList;
     }
 
     public List<ArticleDTO> filter(ArticleFilterDTO dto, int page, int size){
@@ -431,6 +453,15 @@ public class ArticleService {
             dtoList.add(articleDTO);
         });
         return dtoList;
+    }
+
+    public ArticleEntity get(String id){
+        Optional<ArticleEntity> byId = articleRepository.findById(id);
+        if(byId.isEmpty()){
+            throw new ItemNotFoundException("Article not found");
+        }
+        return byId.get();
+
     }
 }
 

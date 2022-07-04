@@ -32,6 +32,8 @@ public class ProfileController {
         ProfileDTO profileDTO = profileService.create(dto);
         return ResponseEntity.ok(profileDTO);
     }
+
+//    2. Update Profile (ADMIN)
     @PutMapping("/adm/update/{id}")
     public ResponseEntity<String>update(@RequestBody ProfileDTO dto,
                                         @PathVariable("id") Integer id,
@@ -41,6 +43,17 @@ public class ProfileController {
         profileService.update(id,dto);
         return ResponseEntity.ok("Successful");
     }
+
+//    3. Update Profile Detail (ANY)
+    @PutMapping("/update")
+    public ResponseEntity<String>update(@RequestBody ProfileDTO dto,
+                                        HttpServletRequest request){
+        Integer id = HttpHeaderUtil.getId(request);
+        profileService.update(id,dto);
+        return ResponseEntity.ok("Successful");
+    }
+
+//        4. Profile List (ADMIN) (Pagination)
     @GetMapping("/adm/list")
     public ResponseEntity<?> getAll(HttpServletRequest request){
         log.info("Request to get profile list");
@@ -48,6 +61,20 @@ public class ProfileController {
         List<ProfileDTO> all = profileService.getAll();
         return ResponseEntity.ok().body(all);
     }
+
+//    4. Profile List (ADMIN) (Pagination)
+    @PostMapping("/adm/filter")
+    public ResponseEntity<List<ProfileDTO>> filter(@RequestParam(value = "page", defaultValue = "1")int page,
+                                                   @RequestParam(value = "size", defaultValue = "4")int size,
+                                                   @RequestBody ProfileFilterDTO dto,
+                                                   HttpServletRequest request) {
+        HttpHeaderUtil.getId(request,ProfileRole.ADMIN);
+        List<ProfileDTO> response = profileService.filter(dto,page,size);
+        return ResponseEntity.ok().body(response);
+    }
+
+
+    //    5. Delete Profile By Id (ADMIN)
     @DeleteMapping("/adm/{id}")
     public ResponseEntity<String>delete(@PathVariable("id") Integer id,
                                         HttpServletRequest request){
@@ -59,15 +86,7 @@ public class ProfileController {
     }
 
 
-
-
-    @PutMapping("/update")
-    public ResponseEntity<String>update(@RequestBody ProfileDTO dto,
-                                        HttpServletRequest request){
-        Integer id = HttpHeaderUtil.getId(request);
-        profileService.update(id,dto);
-        return ResponseEntity.ok("Successful");
-    }
+//     6. Update Photo (ANY) (Murojat qilgan odamni rasmini upda qilish)   (remove old image)
     @PutMapping("/setPhoto/{photoId}")
     public ResponseEntity<String> setPhoto(@PathVariable("photoId") String photoId,
                                              HttpServletRequest request) {
@@ -75,17 +94,6 @@ public class ProfileController {
         String response = profileService.setPhoto(userId, photoId);
         return ResponseEntity.ok(response);
     }
-
-    @PostMapping("/adm/filter")
-    public ResponseEntity<List<ProfileDTO>> filter(@RequestParam(value = "page", defaultValue = "1")int page,
-                                                    @RequestParam(value = "size", defaultValue = "4")int size,
-                                                    @RequestBody ProfileFilterDTO dto,
-                                                   HttpServletRequest request) {
-        HttpHeaderUtil.getId(request,ProfileRole.ADMIN);
-        List<ProfileDTO> response = profileService.filter(dto,page,size);
-        return ResponseEntity.ok().body(response);
-    }
-
 
 
 }
