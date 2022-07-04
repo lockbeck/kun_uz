@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,9 +27,10 @@ public class CommentController {
 
     //secure
 
-
+//1. CREATE (ANY)
+//        (content,article_id,reply_id)
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody CommentDTO dto,
+    public ResponseEntity<String> create(@RequestBody @Valid CommentDTO dto,
                                          HttpServletRequest request) {
         log.info("Request for create comment {}",dto);
         Integer integer = HttpHeaderUtil.getId(request);

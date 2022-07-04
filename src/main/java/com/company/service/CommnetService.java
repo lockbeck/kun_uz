@@ -25,10 +25,6 @@ public class CommnetService {
     private ProfileRepository profileRepository;
 
      public void create(CommentDTO dto, Integer profileId){
-         if(dto.getContent().isEmpty()){
-             throw new BadRequestException("Comment is empty");
-         }
-
          Optional<ProfileEntity> byId = profileRepository.findById(profileId);
          if(byId.isEmpty()){
              throw new ItemNotFoundException("User not found");
@@ -47,7 +43,7 @@ public class CommnetService {
          if(dto.getReplyId()!=null){
              entity.setReplyId(dto.getReplyId());
          }
-         entity.setArticle(new ArticleEntity(dto.getArticle().getId()));
+         entity.setArticle(new ArticleEntity(dto.getArticleId()));
          commentRepository.save(entity);
 
      }

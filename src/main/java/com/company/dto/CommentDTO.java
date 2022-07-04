@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,7 +16,10 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentDTO {
     private Integer id;
+    @NotBlank(message = "content is null or empty MAZGI")
     private String content;
+    @NotBlank(message = "articleId is null or empty MAZGI")
+    private String articleId;
     private Integer replyId;
 
 

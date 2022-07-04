@@ -5,6 +5,7 @@ import com.company.enums.LangEnum;
 import com.company.enums.ProfileRole;
 import com.company.service.ArticleService;
 import com.company.util.HttpHeaderUtil;
+import com.company.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
@@ -54,7 +55,6 @@ public class ArticleController {
     }
 
     // 4. Publisher changes status of article
-
     @PutMapping("/adm/changeStatus/{id}")
     public ResponseEntity<String> changeStatus(@PathVariable("id") String id,
                                                HttpServletRequest request) {
@@ -167,8 +167,18 @@ public class ArticleController {
 
     }
 
-
-
+//     20. Filter Article (id,title,region_id,category_id,crated_date_from,created_date_to
+//            published_date_from,published_date_to,moderator_id,publisher_id,status) with Pagination (PUBLISHER)
+//    ArticleShortInfo
+    @PostMapping("/filter")
+    public ResponseEntity<List<ArticleDTO>> filter(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                   @RequestParam(value = "size", defaultValue = "5") int size,
+                                                   @RequestBody ArticleFilterDTO dto,
+                                                   HttpServletRequest request) {
+        HttpHeaderUtil.getId(request,ProfileRole.PUBLISHER);
+        List<ArticleDTO> response = articleService.filter(dto, page, size);
+        return ResponseEntity.ok().body(response);
+    }
 
 
 
@@ -204,26 +214,18 @@ public class ArticleController {
         return ResponseEntity.ok().body(all);
     }
 
-
 //    @GetMapping("/adm/listArticle")
 //    public ResponseEntity<?> getLastFiveArticlesByTypes(HttpServletRequest request){
 //        HttpHeaderUtil.getId(request ,ProfileRole.MODERATOR);
 //        List<ArticleDTO> all = articleService.getAll();
 //        return ResponseEntity.ok().body(all);
+
 //    }
 
     @GetMapping("/pagination")
     public ResponseEntity<PageImpl> getPagination(@RequestParam(value = "page", defaultValue = "1") int page,
                                                   @RequestParam(value = "size", defaultValue = "5") int size) {
         PageImpl response = articleService.pagination(page, size);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @PostMapping("/filter")
-    public ResponseEntity<List<ArticleDTO>> filter(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                   @RequestParam(value = "size", defaultValue = "5") int size,
-                                                   @RequestBody ArticleFilterDTO dto) {
-        List<ArticleDTO> response = articleService.filter(dto, page, size);
         return ResponseEntity.ok().body(response);
     }
 

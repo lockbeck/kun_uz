@@ -24,28 +24,34 @@ public class ArticleLikeController {
     @Autowired
     private ArticleLikeService articleLikeService;
 
+//     16. Article LikeCreate (ANY)
+//        (article_id)
     @PostMapping("/like")
     public ResponseEntity<Void> like(@RequestBody ArticleLikeDTO dto,
                                      HttpServletRequest request) {
-        log.info("Request for like {}",dto);
+        log.info("Request to like {}",dto);
         Integer profileId = HttpHeaderUtil.getId(request);
         articleLikeService.articleLike(dto.getArticleId(), profileId);
         return ResponseEntity.ok().build();
     }
 
+//    17. Article DisLikeCreate (ANY)
+//            (article_id)
     @PostMapping("/dislike")
     public ResponseEntity<Void> dislike(@RequestBody ArticleLikeDTO dto,
                                         HttpServletRequest request) {
-        log.info("Request for dislike {}",dto);
+        log.info("Request to dislike {}",dto);
         Integer profileId = HttpHeaderUtil.getId(request);
         articleLikeService.articleDisLike(dto.getArticleId(), profileId);
         return ResponseEntity.ok().build();
     }
 
+//    18. Article Like Remove (ANY)
+//        (article_id)
     @PostMapping("/remove")
     public ResponseEntity<Void> remove(@RequestBody ArticleLikeDTO dto,
                                        HttpServletRequest request) {
-        log.info("Request for remove {}",dto);
+        log.info("Request to remove {}",dto);
         Integer profileId = HttpHeaderUtil.getId(request);
         articleLikeService.removeLike(dto.getArticleId(), profileId);
         return ResponseEntity.ok().build();
